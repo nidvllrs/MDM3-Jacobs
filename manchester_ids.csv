@@ -1,0 +1,93 @@
+wkt_geom;nodeid;name;tlc;node_id
+Point (396273 389354);116;Marple;MPL;railn_116
+Point (395685 390021);117;;;railn_117
+Point (381806 398845);219;Salford Crescent;SLD;railn_219
+Point (381826 398684);220;;;railn_220
+Point (381757 399117);221;;;railn_221
+Point (387174 400651);432;;;railn_432
+Point (386411 400231);433;;;railn_433
+Point (383980 399052);434;;;railn_434
+Point (387284 400712);435;;;railn_435
+Point (386000 400010);515;;;railn_515
+Point (386378 399948);516;;;railn_516
+Point (384034 397475);592;Manchester Oxford Road;MCO;railn_592
+Point (383427 397514);593;Deansgate;DGT;railn_593
+Point (384905 397755);594;Manchester Piccadilly;MAN;railn_594
+Point (387123 397250);658;Ashburys;ABY;railn_658
+Point (386929 397240);659;;;railn_659
+Point (387468 397199);660;;;railn_660
+Point (387288 394223);806;Levenshulme;LVM;railn_806
+Point (387086 395066);807;;;railn_807
+Point (388174 392167);808;Heaton Chapel;HTC;railn_808
+Point (377000 387893);859;Altrincham;ALT;railn_859
+Point (377270 388828);860;Navigation Road;NVR;railn_860
+Point (374660 394188);866;Flixton;FLI;railn_866
+Point (375667 394440);867;Chassen Road;CSR;railn_867
+Point (396378 395072);1333;Godley;GDL;railn_1333
+Point (395620 395551);1334;Newton for Hyde;NWN;railn_1334
+Point (383237 397596);1433;;;railn_1433
+Point (394076 390848);1513;Romiley;RML;railn_1513
+Point (394050 390862);1514;;;railn_1514
+Point (388862 390749);1611;;;railn_1611
+Point (387684 399540);1779;;;railn_1779
+Point (386512 399891);1780;;;railn_1780
+Point (392552 399493);1781;;;railn_1781
+Point (386833 399524);1782;;;railn_1782
+Point (379358 402815);1939;Clifton;CLI;railn_1939
+Point (389599 393293);2098;Reddish South;RDS;railn_2098
+Point (389253 389835);2099;Stockport;SPT;railn_2099
+Point (373849 402638);2150;Walkden;WKD;railn_2150
+Point (377773 402059);2175;Swinton (Greater Manchester);SNN;railn_2175
+Point (376715 402243);2176;Moorside;MSD;railn_2176
+Point (386231 393052);2265;Mauldeth Road;MAU;railn_2265
+Point (385789 391687);2266;Burnage;BNA;railn_2266
+Point (378366 395113);2304;Humphrey Park;HUP;railn_2304
+Point (376551 394660);2305;Urmston;URM;railn_2305
+Point (379365 395367);2306;Trafford Park;TRA;railn_2306
+Point (388948 396920);2336;Gorton;GTO;railn_2336
+Point (390498 397188);2337;Fairfield;FRF;railn_2337
+Point (391178 392810);2372;Brinnington;BNT;railn_2372
+Point (389728 394757);2373;Reddish North;RDN;railn_2373
+Point (392776 391796);2374;Bredbury;BDY;railn_2374
+Point (395814 398602);2549;Stalybridge;SYB;railn_2549
+Point (392742 399481);2604;;;railn_2604
+Point (392610 399497);2605;;;railn_2605
+Point (392500 397539);2647;;;railn_2647
+Point (391898 396624);2648;;;railn_2648
+Point (392612 397543);2649;Guide Bridge;GUI;railn_2649
+Point (392863 397550);2694;;;railn_2694
+Point (393896 399396);2730;Ashton-under-Lyne;AHN;railn_2730
+Point (385345 390316);2741;East Didsbury;EDY;railn_2741
+Point (391415 395649);2819;Denton;DTN;railn_2819
+Point (393918 392455);2831;Woodley;WLY;railn_2831
+Point (376365 398733);2953;Patricroft;PAT;railn_2953
+Point (377977 398810);2954;Eccles;ECC;railn_2954
+Point (385839 397225);2969;Ardwick;ADK;railn_2969
+Point (385261 397651);2970;;;railn_2970
+Point (392220 391855);2981;;;railn_2981
+Point (393923 392474);2982;;;railn_2982
+Point (390353 402641);3108;Hollinwood;;railn_3108
+Point (389322 401588);3109;Failsworth;;railn_3109
+Point (393285 397465);3129;;;railn_3129
+Point (393131 397840);3130;;;railn_3130
+Point (394315 396693);3131;;;railn_3131
+Point (390712 387702);3170;Woodsmoor;WSR;railn_3170
+Point (373633 391102);3220;;;railn_3220
+Point (377903 389311);3221;;;railn_3221
+Point (387938 400859);3275;Dean Lane;;railn_3275
+Point (395000 388770);3320;Rose Hill Marple;RSH;railn_3320
+Point (384768 388539);3437;Gatley;GTY;railn_3437
+Point (382564 398000);3486;;;railn_3486
+Point (388755 402945);3533;Moston;MSO;railn_3533
+Point (388531 395602);3539;Ryder Brow;RRB;railn_3539
+Point (388144 396090);3540;Belle Vue;BLV;railn_3540
+Point (383099 398452);3552;Salford Central;SFD;railn_3552
+Point (383516 389133);3616;;;railn_3616
+Point (394777 396073);3644;Flowery Field;FLF;railn_3644
+Point (389143 389015);3707;;;railn_3707
+Point (394446 396431);3814;Hyde North;HYT;railn_3814
+Point (394443 395002);3815;Hyde Central;HYC;railn_3815
+Point (383978 399051);3862;Manchester Victoria;MCV;railn_3862
+Point (389963 388232);3863;Davenport;DVN;railn_3863
+Point (394978 388670);3926;;;railn_3926
+Point (380799.13790102576604113 396202.59749301319243386);4122;Manchester United Football Ground;MUF;railn_4122
