@@ -24,6 +24,19 @@ def eigenvector_func(G):
     max_eigenvector=max(eigenvector_dict, key=eigenvector_dict.get)
     return max_eigenvector
 
+# =============================================================================
+# for the networkx function 'current_flow_betweeness_centrality' to work must
+# have scipy=1.6 version and networkx=2.7 version otherwise there's an error
+# =============================================================================
+
+def current_func(G):
+    
+    undi_G=G.to_undirected(reciprocal=True)
+    current_dict=nx.current_flow_betweenness_centrality(undi_G)
+    max_current=max(current_dict, key=current_dict.get)
+    return max_current
+
 
 print(eigenvector_func(G))
 print(betweenness_func(G))
+print(current_func(G))
