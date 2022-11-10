@@ -37,7 +37,9 @@ network_set = {'railn3208' : 'Bedminster'   ,   'railn53' : 'Bristol Temple Mead
                'railn2452' : 'Redland'      , 'railn3353' : 'Stapleton Road',
                'railn3288' : 'Sea Mills'    , 'railn3121' : 'Shirehampton',
                'railn210'  : 'Split 1'      , 'railn54'   : 'Split 2',   
-               'railn55'   : 'Split 3'      , 'railn3029' : 'Split 4'}
+               'railn55'   : 'Split 3'      , 'railn3029' : 'Split 4',
+               'railn208'  : 'Split 5'      ,  'railn209' : 'Split 6',
+               'railn3916' : 'Split 7'}
  
 def my_draw_networkx_edge_labels(
     G,
@@ -210,6 +212,25 @@ def my_draw_networkx_edge_labels(
     return text_items
 
 
+def read_ids_network(csv):
+    
+    i=1
+    data = pd.read_csv(csv, header=1, low_memory=False)
+    data = np.array(data)
+    
+    network_sett = {}
+    # Iterates through the data, extracting the relevant edges and their correspoding flow of passangers
+    for line in data:
+        line = np.array(str(line).split(';'))
+        line[-1]=''.join(e for e in line[-1] if e.isalnum())
+        
+        if line[-3]:
+            network_sett[line[-1]]=str(line[-3])
+        else:
+            network_sett[line[-1]] = str('Split '+str(i))
+            i+=1
+        
+    return network_sett
 
 
 
@@ -228,45 +249,54 @@ def read_matrix (matrixod, network_set):
     """
     
     # Reads csv and converts it to numpy array
-    data = pd.read_csv(matrixod, header=None, low_memory=False)
+    data = pd.read_csv('manchester_od_matrix_.csv', header=1, sep=';', on_bad_lines='skip', low_memory=False)
+    
     data = np.array(data) 
- 
-    # Creates an array of edges between stations(using their node_ids)
-    edge_ids =[] 
-    for line in data:
-      line[3]= np.array(line[3].split(','))
-      line[3] = [''.join(e for e in string if e.isalnum()) for string in line[3]]
-      for i in range(len(line[3])-1):
-          if (line[3][i], line[3][i+1]) not in edge_ids:
-              edge_ids.append((line[3][i], line[3][i+1]))
     
-
-    # Removes paths between stations that are not considered
-    for (i,j) in edge_ids:
-        if i not in network_set.keys() or j not in network_set.keys():
-            edge_ids.remove((i,j))
-            
-    # Converts the edge list from node_ids to station names  
-    edgelist=[]       
-    for (i,j) in edge_ids:
-        if i in network_set.keys() and j in network_set.keys():
-            (u,v) = (network_set[i], network_set[j])
-            edgelist.append((u,v))
+    # # Creates an array of edges between stations(using their node_ids)
+    # edge_ids =[] 
+    # for line in data[0:100000]:
+    #     #print(line[4])
+    #     line[4]= np.array(line[4].split(','))
+    #     line[4] = [''.join(e for e in string if e.isalnum()) for string in line[4]]
+    #     for i in range(len(line[4])-1):
+    #         if (line[4][i], line[4][i+1]) not in edge_ids and line[4][i] != np.nan and line[4][i+1]!= np.nan:
+    #             #print((line[4][i], line[4][i+1]))
+    #             edge_ids.append((line[4][i], line[4][i+1]))
+     
+    # print('edge_ids\n',edge_ids)    
+    # # Removes paths between stations that are not considered
+    # for (i,j) in edge_ids:
+    #     if i not in network_set.keys() or j not in network_set.keys():
+    #         edge_ids.remove((i,j))
+    # print('edge_ids\n',edge_ids)         
+    # # Converts the edge list from node_ids to station names  
+    # edgelist=[]       
+    # for (i,j) in edge_ids:
+    #     if i in network_set.keys() and j in network_set.keys():
+    #         (u,v) = (network_set[i], network_set[j])
+    #         edgelist.append((u,v))
    
+    # print('edgelist',edgelist)
     # Creates dictionary of paths and corresponding distances between them
-    distance_edges ={}
-    for line in data:        
-        if len(line[3])==2:
-              if line[3][0] in network_set.keys() and line[3][1] in network_set.keys():
-                  distance_edges[(network_set[line[3][0]], network_set[line[3][1]])]= line[5]           
     
-    return edgelist, distance_edges
+    distance_edges ={}
+    for line in data :
+        if type(line[4]) != float:   
+            line[4]= np.array(line[4].split(','))
+            line[4] = [''.join(e for e in string if e.isalnum()) for string in line[4]]
+            #print(line[4])
+            if len(line[4])==2:
+                  if line[4][0] in network_set.keys() and line[4][1] in network_set.keys():
+                      distance_edges[(network_set[line[4][0]], network_set[line[4][1]])]= line[6]           
+    
+    return distance_edges
 
 
 
   
 
-def read_csv_passangers(csv, network_set, edgelist):
+def read_csv_passangers(csv, network_set):
     """
     This function converts the data in the edge flow csv into a 
     dictionary of edges and flow of passangers, for the Bristol network.
@@ -295,13 +325,14 @@ def read_csv_passangers(csv, network_set, edgelist):
             origin = network_set[line[5]]
             destination = network_set[line[6]]
             n_passangers = int(float(line[7]))
-            edge = (origin, destination)
-            passangers[edge] = n_passangers
-            
-    return passangers    
+            if n_passangers != 0:
+                edge = (origin, destination)
+                passangers[edge] = n_passangers
+    edgelist = list(passangers)        
+    return passangers, edgelist 
 
 
-def draw_graph(edgelist, passangers) : #, origin, destination):
+def draw_graph(edgelist, passangers, origin, destination):
     """
     This function draws the graph of the original network, # with the disrupted path highlighted in red.
     
@@ -321,10 +352,11 @@ def draw_graph(edgelist, passangers) : #, origin, destination):
             nodes.append(i)
         if j not in nodes:
             nodes.append(j)
-            
+        
     # Separate stations and splits
     splits = [i for i in nodes if 'Split' in i]
     stations = [i for i in nodes if i not in splits]
+    edgelist = list(passangers)
     
     # Create the directed graph, adding the edges and nodes
     G = nx.DiGraph()
@@ -332,42 +364,37 @@ def draw_graph(edgelist, passangers) : #, origin, destination):
     
                                                                                               
     # Define the disrupted path (includes two-way route):
-    # disrupted_path =[(origin, destination)]
-    # if origin in G.neighbors(destination):
-    #     disrupted_path.append((destination, origin))
+    disrupted_path =[(origin, destination)]
+    if origin in G.neighbors(destination):
+        disrupted_path.append((destination, origin))
      
-    # Flow of passangers from a to b == flow from b to a
-    for (i,j) in list(passangers):
-        # Flow between 2 splits is divided between the 2 paths between them:
-        if i in splits and j in splits:
-            passangers[(j,i)] = passangers[(i,j)]//2
-            passangers[(i,j)] = passangers[(i,j)]//2
+    # Flow of passangers from a to b = flow from b to a
+    for (i,j) in edgelist:
         passangers[(j,i)] = passangers[(i,j)]
+        
+    edgelist = list(passangers)
+   
     
     # Add edges and corresponding weights (number of passangers)        
-    for i in range(len(list(passangers))):
-        G.add_edge(list(passangers)[i][0], list(passangers)[i][1], weight = list(passangers.values())[i])
+    for i in range(len(edgelist)):
+        G.add_edge(edgelist[i][0], edgelist[i][1], weight = list(passangers.values())[i])
+    
     
     # Draw graph:
-    plt.figure(figsize=(100,100))
-    pos = nx.spring_layout(G, scale=0.5)
+    fig, ax = plt.subplots(1, figsize=(90,90))
+    pos = nx.planar_layout(G, scale=0.5)
     
-    nx.draw_networkx_nodes(G, pos, nodelist = stations, node_color="b", node_size = 6000, alpha=0.4)
-    nx.draw_networkx_nodes(G, pos, nodelist = splits, node_color="r", node_size = 6000, alpha=0.4)
-    nx.draw_networkx_labels(G, pos, font_size= 50)
-    curved_edges = [(i,j) for (i,j) in G.edges() if 'Split' in i and 'Split' in j ]
-    straight_edges = list(set(G.edges()) - set(curved_edges))
-    nx.draw_networkx_edges(G, pos, edgelist=straight_edges, arrowsize=40, arrowstyle='->' )
-    arc_rad = 0.35
-    nx.draw_networkx_edges(G, pos, edgelist=curved_edges, connectionstyle=f'arc3, rad = {arc_rad}', arrowsize=40, arrowstyle='->',  )
+    nx.draw_networkx_nodes(G, pos=pos,ax=ax,  nodelist = stations, node_color="b", node_size = 1000, alpha=0.5, label='Stations')
+    nx.draw_networkx_nodes(G, pos=pos,ax=ax, nodelist = splits, node_color="r", node_size = 500, alpha=0.5, label='Splits')
+    nx.draw_networkx_labels(G, pos=pos,ax=ax, font_size= 40)
+    nx.draw_networkx_edges(G, pos=pos,ax=ax, edgelist=edgelist, arrowsize=40, arrowstyle='->' )
     # Draw disrupted path in red:
-    # nx.draw_networkx_edges(G, pos, edgelist= disrupted_path, connectionstyle=f'arc3, rad = {arc_rad}', arrowsize=40, edge_color='r')
+    nx.draw_networkx_edges(G, pos, edgelist= disrupted_path, arrowsize=40, width=12, arrowstyle='->', edge_color='r')
     
     edge_weights = nx.get_edge_attributes(G,'weight')
-    curved_edge_labels = {edge: edge_weights[edge] for edge in curved_edges}
-    straight_edge_labels = {edge: edge_weights[edge] for edge in straight_edges}
-    my_draw_networkx_edge_labels(G, pos, edge_labels=curved_edge_labels,rotate=False,rad = arc_rad, font_size= 30)
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=straight_edge_labels,rotate=False, font_size= 30)
+    edge_labels = {edge: edge_weights[edge] for edge in edgelist}
+    nx.draw_networkx_edge_labels(G, pos=pos, ax=ax, edge_labels=edge_labels, rotate=False,  font_size= 30)
+    
     plt.show()
     
     # This makes an adjacency matrix from the graph data:
@@ -377,7 +404,7 @@ def draw_graph(edgelist, passangers) : #, origin, destination):
 
   
 
-def disruptions (G, passangers, origin, destination):
+def disruptions (G, nodes, passangers, origin, destination):
     """
     This function calculates the number of people affected by the disruption, 
     calculates an alternative route these people would have to take, and displays it
@@ -393,48 +420,93 @@ def disruptions (G, passangers, origin, destination):
         with the alternative route to this, in green 
         - Number of people affected by the disruption.
     """
+    # Separate stations and splits
+    splits = [i for i in nodes if 'Split' in i]
+    stations = [i for i in nodes if i not in splits]
+    edgelist= list(passangers)
     
     # This calculates the number of people affected, only considering people on the path between stops (inc. two-way)
     p_affected = passangers[(origin,destination)]
     G.remove_edge(origin, destination)
+    
+    
     if origin in G.neighbors(destination):
         p_affected += passangers[(destination,origin)]
         G.remove_edge(destination, origin)
-   # print( 'Number of people affected:\n', p_affected)
+        edgelist.remove((origin, destination))
+        if ((destination, origin)) in edgelist:
+            edgelist.remove((destination, origin))
+        
     
+    # Create an identical Graph, weighted instead by the distance between nodes (to find shortest path)
+    # G2 = nx.DiGraph()
+    # G2.add_nodes_from(nodes)
+    # for i in range(len(edgelist)):
+    #     G2.add_edge(edgelist[i][0], edgelist[i][1], weight = list(distance_edges.values())[i])
     
+        
     # Calculate an alternative path
     alternative_path = nx.shortest_path(G, source = origin, target = destination)
-    alternative_edges=[(alternative_path[i],alternative_path[i+1]) for i in range(len(alternative_path)-1) ]
+    alternative_edges=[(alternative_path[i],alternative_path[i+1]) for i in range(len(alternative_path)-1)]
+   
+   
+    
     # Adding the number of reallocated people to the weight of the alternative path
     for (i,j) in alternative_edges:
         passangers[(i,j)]+= p_affected
         G[i][j]['weight'] += p_affected
+        
+    # Draw Graph
+    plt.figure(figsize=(100,100))
+    pos = nx.spring_layout(G, scale=0.5)
     
+    nx.draw_networkx_nodes(G, pos, nodelist = stations, node_color="b", node_size = 1000, alpha=0.4)
+    nx.draw_networkx_nodes(G, pos, nodelist = splits, node_color="r", node_size = 500, alpha=0.4)
+    nx.draw_networkx_labels(G, pos, font_size= 40)
     
-    # Draw graph
-    plt.figure(figsize=(10,10))
-    pos = nx.circular_layout(G)
-   
-    edge_labels = nx.get_edge_attributes(G, 'weight')
-    nx.draw_networkx_nodes(G, pos, node_size = 400)
-    nx.draw_networkx_labels(G, pos, font_size= 8)
-    nx.draw_networkx_edges(G, pos,  edge_color='k', arrows=True, arrowsize=10, arrowstyle='->', width=1.0)
-    nx.draw_networkx_edges(G, pos,edgelist=alternative_edges,  edge_color='g', arrows=True, arrowsize=20, arrowstyle='->', width=1.6)
-    nx.draw_networkx_edge_labels(G, pos, edge_labels = edge_labels, font_size=10, font_color='k')
+    alt_straight_edges = list(set(alternative_edges))
+    straight_edges = list(set(G.edges()) - set(alt_straight_edges))
+    nx.draw_networkx_edges(G, pos, edgelist=straight_edges, arrowsize=40, arrowstyle='->' )
+    nx.draw_networkx_edges(G, pos, edgelist=alt_straight_edges, arrowsize=40, arrowstyle='->' , width=15, edge_color='g')
     
+    edge_weights = nx.get_edge_attributes(G,'weight')
+    edge_labels = {edge: edge_weights[edge] for edge in edgelist}
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels,rotate=False, font_size= 30)
     plt.show()
     
-    return p_affected
+
+    return alternative_path,  p_affected
 
 # Running the code:
-edgelist, distance_edges = read_matrix('filtered_od_matrix.csv', network_set)
+network_sett = read_ids_network('manchester_ids.csv')    
+#print('network_sett:\n',network_sett)
 
-passangers= read_csv_passangers('edge_flows_1.csv', network_set, edgelist)
+passangers, edgelist = read_csv_passangers('edge_flows_1.csv', network_sett)
+#print('passangers:\n', passangers)
 
-draw_graph(edgelist, passangers) #, 'Bedminster', 'Lawrence Hill') 
+#distance_edges = read_matrix('manchester_od_matrix.csv', network_sett)
 
-#disruptions(G,weighted_edges, 'Bedminster', 'Lawrence Hill')
+#print('distance_edges:\n', distance_edges)
+
+nodes, G, adj = draw_graph(edgelist, passangers, 'Manchester Oxford Road', 'Deansgate')
+#print('nodes:\n', nodes)
+
+alternative_path, p_affected= disruptions(G, nodes, passangers, 'Manchester Oxford Road', 'Deansgate')
+print('alternative path:\n', alternative_path)
+print('people affected:\n', p_affected)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
