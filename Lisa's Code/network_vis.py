@@ -4,8 +4,10 @@ import geopandas as gpd
 import momepy
 import contextily as cx
 from mpl_toolkits.basemap import Basemap
-rail = gpd.read_file(r"C:\Users\ndvll\OneDrive\Bureau\rail_network.csv")
+
+rail = gpd.read_file("path/to/rail_network.csv")
 rail = rail.explode()
+
 #print(rail)
 #rail_df = gpd.GeoDataFrame(rail,geometry=WKT)
 
