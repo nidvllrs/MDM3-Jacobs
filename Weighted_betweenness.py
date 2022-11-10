@@ -80,24 +80,3 @@ Cent_mat=np.multiply(ADJmat,Cent_mat)
 
 
 Max_val=unravel_index(Cent_mat.argmax(), Cent_mat.shape)
-
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
