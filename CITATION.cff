@@ -3,17 +3,14 @@ message: "If you use this software, please cite it as below."
 authors:
 - family-names: "DEVILLERS"
   given-names: "Lisa"
-
 - family-names: "Hadjidemosthenou"
   given-names: "Georgia"
 - family-names: "Rihoy"
   given-names: "Tom"
  - family-names: "Smith García"
   given-names: "Victoria"
-
  - family-names: "Williams"
   given-names: "Sita"
-
 title: "MDM3-Jacobs"
 version: 1.0.0
 doi: 10.5281/zenodo.1234
