@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 authors:
-- family-names: "DEVILLERS"
+- family-names: "Devillers"
   given-names: "Lisa"
   orcid: "https://orcid.org/0000-0000-0000-0000"
 - family-names: "Hadjidemosthenou"
@@ -10,7 +10,7 @@ authors:
 - family-names: "Rihoy"
   given-names: "Tom"
   orcid: "https://orcid.org/0000-0000-0000-0000"
- - family-names: "Smith García"
+ - family-names: "Smith-García"
   given-names: "Victoria"
   orcid: "https://orcid.org/0000-0000-0000-0000"
  - family-names: "Williams"
