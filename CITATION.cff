@@ -7,15 +7,6 @@ authors:
 - family-names: "Hadjidemosthenou"
   given-names: "Georgia"
   orcid: "https://orcid.org/0000-0000-0000-0000"
-- family-names: "Rihoy"
-  given-names: "Tom"
-  orcid: "https://orcid.org/0000-0000-0000-0000"
- - family-names: "Smith García"
-  given-names: "Victoria"
-  orcid: "https://orcid.org/0000-0000-0000-0000"
- - family-names: "Williams"
-  given-names: "Sita"
-  orcid: "https://orcid.org/0000-0000-0000-0000"
 title: "MDM3-Jacobs"
 version: 1.0.0
 doi: 10.5281/zenodo.1234
